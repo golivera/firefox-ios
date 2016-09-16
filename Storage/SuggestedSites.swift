@@ -17,7 +17,6 @@ public class SuggestedSite: Site {
     let trackingId: Int
     init(data: SuggestedSiteData) {
         self.backgroundColor = UIColor(colorString: data.bgColor)
-        //self.backgroundColor = self.backgroundColor == UI
         self.trackingId = data.trackingId
         self.wordmark = Favicon(url: data.imageUrl, date: NSDate(), type: .Icon)
         super.init(url: data.url, title: data.title, bookmarked: nil)

@@ -116,9 +116,7 @@ class TopSiteItemCell: UICollectionViewCell {
                 return
             }
             img.getColors(CGSize(width: 25, height: 25)) { colors in
-                //In cases where the background is black/white. Force the background color to a different color
-                let colorArr = [colors.backgroundColor, colors.detailColor, colors.primaryColor].filter { !$0.isBlackOrWhite }
-                self.contentView.backgroundColor = colorArr.isEmpty ? UIColor.lightGrayColor() : colorArr.first
+                self.contentView.backgroundColor = colors.backgroundColor ?? UIColor.lightGrayColor()
             }
         }
     }
@@ -128,7 +126,9 @@ class TopSiteItemCell: UICollectionViewCell {
         if let suggestedSite = site as? SuggestedSite {
             let img = UIImage(named: suggestedSite.faviconImagePath!)
             imageView.image = img
-            contentView.backgroundColor = suggestedSite.backgroundColor
+            // This is a temporary hack to make amazon/wikipedia have white backrounds instead of their default blacks
+            // Once we remove the old TopSitesPanel we can change the values of amazon/wikipedia to be white instead of black.
+            contentView.backgroundColor = suggestedSite.backgroundColor.isBlackOrWhite ? UIColor.whiteColor() : suggestedSite.backgroundColor
         } else {
             guard let url = site.icon?.url, favURL = NSURL(string:url) else {
                 contentView.backgroundColor = UIColor.lightGrayColor()
